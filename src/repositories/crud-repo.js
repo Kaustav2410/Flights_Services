@@ -1,5 +1,6 @@
 const {Logger} =require('../config');
-
+const AppError = require('../utils/error-codes');
+const {StatusCodes} =require('http-status-codes');
 class CrudRepository {
     constructor(model){
         this.model=model;
@@ -26,6 +27,9 @@ class CrudRepository {
             // For query select
             // https://sequelize.org/docs/v7/querying/select-methods/
             const response= await this.model.findByPk(data);
+            if(!response){
+                throw new AppError("Cannot found airplane with the given id",StatusCodes.NOT_FOUND); 
+            }
             // Find by primary key
             return response;
     } 

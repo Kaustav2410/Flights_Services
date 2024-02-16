@@ -20,5 +20,5 @@ const validateCreateRequest = (req, res, next) => {
 }
 
 module.exports = {
-    validateCreateRequest
+    validateCreateRequest,
 }
