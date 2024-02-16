@@ -1,7 +1,8 @@
 const { StatusCodes } = require('http-status-codes');
 const {AirplaneRepository} = require('../repositories');
+const AppError = require('../utils/errors/error-codes');
+
 const airplaneRepository = new AirplaneRepository();
-const AppError = require('../utils/error-codes');
 async function createAirplane(data){
     try {
         const airplane = airplaneRepository.create(data);
@@ -39,8 +40,34 @@ async function getAirplane(id){
         throw new AppError("Cannot fetch details of the specific airplane",StatusCodes.INTERNAL_SERVER_ERROR); 
     }
 }
+
+async function destroyAirplane(id){
+    try{
+        const airplane= await airplaneRepository.destroy(id);
+        return airplane;
+    }
+    catch(err){
+        if(err.statusCode == StatusCodes.NOT_FOUND){
+            throw new AppError("The airplane you requested to delete is not found",StatusCodes.NOT_FOUND);  
+        }
+        throw new AppError("Cannot fetch details of the specific airplane",StatusCodes.INTERNAL_SERVER_ERROR); 
+    }
+}
+async function updateAirplane(data,id) {
+    try {
+        const airplane = await airplaneRepository.update(data,id);
+        return airplane;
+    } catch (err) {
+        if(err.statusCode == StatusCodes.NOT_FOUND){
+            throw new AppError("The airplane you requested to delete is not found",StatusCodes.NOT_FOUND);  
+        }
+            throw new AppError("Cannot fetch details of the specific airplane to update",StatusCodes.INTERNAL_SERVER_ERROR); 
+        }   
+}
 module.exports={ 
     createAirplane,
     getAirplanes,
-    getAirplane
+    getAirplane,
+    destroyAirplane,
+    updateAirplane
 }

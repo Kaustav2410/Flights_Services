@@ -1,5 +1,6 @@
 const { AirplaneService} = require('../services');
 const {StatusCodes} = require('http-status-codes');
+const {SuccessResponse,ErrorResponse} = require('../utils/common');
 /* 
     POST:/airplanes 
     req-body {modelNumber:'airBus326' , capacity:200}
@@ -10,18 +11,14 @@ async function  createAirplane (req, res) {
             modelNumber:req.body.modelNumber,
             capacity:req.body.capacity,
         })
+        SuccessResponse.data=airplane;
         return res.status(StatusCodes.CREATED).json({
-            success:true,
-            message:"successfully create an airplane",
-            data:airplane,
-            error:{}
+            SuccessResponse
         })
-    } catch (error) {
+    } catch (err) {
+        ErrorResponse.error=err;
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            success:false,
-            message:"Something went wrong while creating the airplane entry",
-            data:{},
-            error:error
+            ErrorResponse
         });
     }
 }
@@ -29,19 +26,14 @@ async function  createAirplane (req, res) {
 async function getAirplanes(req,res){
     try{
         const airplanes = await AirplaneService.getAirplanes();
-        return res.status(StatusCodes.OK).json({
-            success:true,
-            message:"successfully fetched the details of all the  airplanes",
-            data:airplanes,
-            error:{}
+        SuccessResponse.data=airplanes;
+        return res.status(StatusCodes.CREATED).json({
+            SuccessResponse
         })
-    }
-    catch(err){
+    } catch (err) {
+        ErrorResponse.error=err;
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            success:false,
-            message:"Something went wrong while getting the details of the airplanes",
-            data:{},
-            error:err
+            ErrorResponse
         });
     }
     
@@ -52,31 +44,59 @@ async function getAirplane(req,res){
         const airplane = await AirplaneService.getAirplane(
             req.params.id
         );
-        return res.status(StatusCodes.OK).json({
-            success:true,
-            message:"successfully fetched the details of the airplane",
-            data:airplane,
-            error:{}
+        SuccessResponse.data=airplane;
+        return res.status(StatusCodes.CREATED).json({
+            SuccessResponse
         })
-    }
-    catch(err){
-        if(err.statusCode==StatusCodes.NOT_FOUND){
-            return res.status(StatusCodes.NOT_FOUND).json({
-                success:false,
-                data:{},
-                error:err
-            });
-        }
+    } catch (err) {
+        ErrorResponse.error=err;
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            success:false,
-            data:{},
-            error:err
+            ErrorResponse
         });
     }
     
 }
+
+async function deleteAirplane(req,res){
+    try{
+        const airplane = await AirplaneService.destroyAirplane(
+            req.params.id
+        )
+        SuccessResponse.data=airplane;
+        return res.status(StatusCodes.OK).json({
+            SuccessResponse
+        })
+    }
+    catch(err){
+        ErrorResponse.error=err;
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            ErrorResponse
+        })
+    }
+}
+async function updateAirplane(req,res){
+    try {
+        const updatedAirplane= await AirplaneService.updateAirplane(
+            {
+                capacity:req.body.capacity,
+                modelNumber:req.body.modelNumber
+            },
+            // data,
+            req.params.id)
+        SuccessResponse.data = updatedAirplane;
+        return res.status(StatusCodes.OK).json({SuccessResponse})
+        
+    } catch (err) {
+        ErrorResponse.error=err;
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            ErrorResponse
+        })
+    }
+}
 module.exports = {
      createAirplane,
      getAirplanes,
-     getAirplane
+     getAirplane,
+     deleteAirplane,
+     updateAirplane
 }

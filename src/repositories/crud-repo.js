@@ -1,5 +1,5 @@
 const {Logger} =require('../config');
-const AppError = require('../utils/error-codes');
+const AppError = require('../utils/errors/error-codes');
 const {StatusCodes} =require('http-status-codes');
 class CrudRepository {
     constructor(model){
@@ -21,6 +21,9 @@ class CrudRepository {
                     id:data 
                 }
             });
+            if(!response){
+                throw new AppError("Cannot found airplane with the given id",StatusCodes.NOT_FOUND); 
+            }
             return response;
     }
     async get(data){
@@ -33,20 +36,26 @@ class CrudRepository {
             // Find by primary key
             return response;
     } 
-    async getAll(data){
+    async getAll(){
             // For query select
             // https://sequelize.org/docs/v7/querying/select-methods/
             const response= await this.model.findAll();
             // Find all 
             return response;
     }
-    async update(id,data){
+    async update(data,id){
             // data is the object which consists of fields to be updated and their new values
             // id consists of the condition where to apply the changes 
             // https://sequelize.org/docs/v7/querying/select-methods/
             const response= await this.model.update(data,{
-                id:id
-            }); 
+                where:{
+                    id:id
+                }
+            }
+            ); 
+            if(!response){
+                throw new AppError("Cannot found airplane with the given id",StatusCodes.NOT_FOUND); 
+            }
             return response;
     }                                                               
 }

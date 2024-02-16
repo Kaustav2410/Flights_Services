@@ -19,6 +19,26 @@ const validateCreateRequest = (req, res, next) => {
     next();
 }
 
+const validateUpdateRequest = (req, res, next) => {
+    if(
+        !req.body.modelNumber &&
+        !req.body.capacity
+        // !req.body.createdAt ||
+        // !req.body.updatedAt
+    ) {
+        // if any of the body params is missing we come inside the if
+        return res.status(StatusCodes.BAD_REQUEST).json({
+            data: {},
+            success: false,
+            message: 'Invalid request body for updation airplane',
+            err: 'Missing mandatory properties to update a airplane'
+        });
+    }
+
+    next();
+}
+
 module.exports = {
     validateCreateRequest,
+    validateUpdateRequest
 }
