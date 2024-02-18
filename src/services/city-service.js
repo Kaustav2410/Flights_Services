@@ -27,12 +27,27 @@ async function deleteCity(id){
     } catch (error) {
         // console.log(error);
         if(error.statusCode==StatusCodes.NOT_FOUND){
-            throw new AppError("City with the given id not found ",StatusCodes.BAD_REQUEST); 
+            throw new AppError("City with the given id not found ",StatusCodes.NOT_FOUND); 
         }
         throw new AppError("Cannot fetch the details of the specific city",StatusCodes.INTERNAL_SERVER_ERROR); 
     }
 }
+
+async function updateCity(data,id) {
+    try {
+        // console.log(data,id);
+        const city = await cityRepository.update(data,id);
+        return city;
+    } catch (err) {
+        console.log(err);
+        if(err.statusCode == StatusCodes.NOT_FOUND){
+            throw new AppError("City with the given id not found",StatusCodes.NOT_FOUND);  
+        }
+            throw new AppError("Cannot fetch details of the specific airplane to update",StatusCodes.INTERNAL_SERVER_ERROR); 
+        }   
+}
 module.exports={ 
     createCity,
-    deleteCity
+    deleteCity,
+    updateCity
 }

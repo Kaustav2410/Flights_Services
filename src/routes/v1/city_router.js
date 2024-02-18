@@ -11,7 +11,7 @@ CityController.createCity);
 // //api/v1/city/:id DELETE
 router.delete('/:id',CityController.deleteCity);
 
-// // api/v1/airplanes/:id PATCH
-// router.patch('/:id',AirplaneController.updateAirplane);
+// // api/v1/city/:id PATCH
+router.patch('/:id',CityController.updateCity);
 
 module.exports=router;

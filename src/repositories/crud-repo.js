@@ -63,8 +63,9 @@ class CrudRepository {
             }
             ); 
             if(!response){
-                throw new AppError("Cannot found airplane with the given id",StatusCodes.NOT_FOUND); 
+                throw new AppError("Cannot found the item with the given id",StatusCodes.NOT_FOUND); 
             }
+            // console.log(response);
             return response;
     }                                                               
 }
