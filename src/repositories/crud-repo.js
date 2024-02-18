@@ -1,3 +1,12 @@
+// This code is a JavaScript module that exports a class named CrudRepository which provides basic CRUD (Create, Read, Update, Delete) operations for a given database model. The class takes a database model as a constructor argument and provides methods to interact with the model.
+
+// The create method takes data as an argument and creates a new record in the database using the create method of the Sequelize model. It returns the newly created record.
+
+// The destroy method takes data as an argument and deletes a record from the database using the destroy method of the Sequelize model. It takes an object with a where property that specifies the condition for deletion. If no record is found with the given condition, it throws an error using the AppError class.
+
+// The code uses the http-status-codes package to define the HTTP status code for the error. The config and errors/error-codes modules are imported but not used in this code.
+
+// Overall, this code provides a basic template for CRUD operations that can be reused for different database models, reducing code duplication and improving maintainability.
 const {Logger} =require('../config');
 const AppError = require('../utils/errors/error-codes');
 const {StatusCodes} =require('http-status-codes');
@@ -22,7 +31,7 @@ class CrudRepository {
                 }
             });
             if(!response){
-                throw new AppError("Cannot found airplane with the given id",StatusCodes.NOT_FOUND); 
+                throw new AppError("Cannot found item with the given id",StatusCodes.NOT_FOUND); 
             }
             return response;
     }

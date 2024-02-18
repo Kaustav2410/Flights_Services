@@ -1,9 +1,8 @@
 // const { ClientErrorCodes } = require('../utils/error-codes');
 const {StatusCodes}=require('http-status-codes');
-const validateCreateRequest = (req, res, next) => {
+const validateCityCreateRequest = (req, res, next) => {
     if(
-        !req.body.modelNumber ||
-        !req.body.capacity
+        !req.body.name
         // !req.body.createdAt ||
         // !req.body.updatedAt
     ) {
@@ -11,15 +10,14 @@ const validateCreateRequest = (req, res, next) => {
         return res.status(StatusCodes.BAD_REQUEST).json({
             data: {},
             success: false,
-            message: 'Invalid request body for create airplane',
-            err: 'Missing mandatory properties to create a airplane'
+            message: 'Invalid request body for creation of city',
+            err: 'Missing mandatory properties to create a city '
         });
     }
 
     next();
 }
 
-
 module.exports = {
-    validateCreateRequest,
+    validateCityCreateRequest,
 }

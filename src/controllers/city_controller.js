@@ -11,16 +11,30 @@ async function  createCity (req, res) {
             name:req.body.name,
         })
         SuccessResponse.data=city;
-        return res.status(StatusCodes.CREATED).json({
-            SuccessResponse
-        })
+        return res.status(StatusCodes.CREATED).json(
+            SuccessResponse)
     } catch (err) {
         ErrorResponse.error=err;
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-            ErrorResponse
-        });
+        return res.status(err.statusCode).json(
+            ErrorResponse);
+    }
+}
+
+async function  deleteCity (req, res) {
+    try {
+        const city = await CityService.deleteCity(
+            req.params.id
+        )
+        SuccessResponse.data=city;
+        return res.status(StatusCodes.CREATED).json(
+            SuccessResponse)
+    } catch (err) {
+        ErrorResponse.error=err;
+        return res.status(err.statusCode).json(
+            ErrorResponse);
     }
 }
 module.exports={
-    createCity
+    createCity,
+    deleteCity
 }

@@ -1,11 +1,11 @@
-const { StatusCodes } = require('http-status-codes');
+const { StatusCodes, NOT_FOUND } = require('http-status-codes');
 const {CityRepository} = require('../repositories');
 const AppError = require('../utils/errors/error-codes');
 
 const cityRepository = new CityRepository();
 async function createCity(data){
     try {
-        const city = cityRepository.create(data);
+        const city = await cityRepository.create(data);
         return city;
     } catch (error) {
         // console.log(error);
@@ -20,55 +20,19 @@ async function createCity(data){
     }
 }
 
-async function getAirplanes(){
-    try{
-        const airplanes= await airplaneRepository.getAll();
-        return airplanes;
-    }
-    catch(err){
-        throw new AppError("Cannot fetch details of the airplanes",StatusCodes.INTERNAL_SERVER_ERROR); 
-    }
-}
-async function getAirplane(id){
-    try{
-        const airplane= await airplaneRepository.get(id);
-        return airplane;
-    }
-    catch(err){
-        if(err.statusCode == StatusCodes.NOT_FOUND){
-            throw new AppError("The airplane you requested is not found",StatusCodes.NOT_FOUND);  
-        }
-        throw new AppError("Cannot fetch details of the specific airplane",StatusCodes.INTERNAL_SERVER_ERROR); 
-    }
-}
-
-async function destroyAirplane(id){
-    try{
-        const airplane= await airplaneRepository.destroy(id);
-        return airplane;
-    }
-    catch(err){
-        if(err.statusCode == StatusCodes.NOT_FOUND){
-            throw new AppError("The airplane you requested to delete is not found",StatusCodes.NOT_FOUND);  
-        }
-        throw new AppError("Cannot fetch details of the specific airplane",StatusCodes.INTERNAL_SERVER_ERROR); 
-    }
-}
-async function updateAirplane(data,id) {
+async function deleteCity(id){
     try {
-        const airplane = await airplaneRepository.update(data,id);
-        return airplane;
-    } catch (err) {
-        if(err.statusCode == StatusCodes.NOT_FOUND){
-            throw new AppError("The airplane you requested to delete is not found",StatusCodes.NOT_FOUND);  
+        const city = await cityRepository.destroy(id);
+        return city;
+    } catch (error) {
+        // console.log(error);
+        if(error.statusCode==StatusCodes.NOT_FOUND){
+            throw new AppError("City with the given id not found ",StatusCodes.BAD_REQUEST); 
         }
-            throw new AppError("Cannot fetch details of the specific airplane to update",StatusCodes.INTERNAL_SERVER_ERROR); 
-        }   
+        throw new AppError("Cannot fetch the details of the specific city",StatusCodes.INTERNAL_SERVER_ERROR); 
+    }
 }
 module.exports={ 
     createCity,
-    // getAirplanes,
-    // getAirplane,
-    // destroyAirplane,
-    // updateAirplane
+    deleteCity
 }
