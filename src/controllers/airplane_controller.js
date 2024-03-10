@@ -7,6 +7,8 @@ const {SuccessResponse,ErrorResponse} = require('../utils/common');
 */
 async function  createAirplane (req, res) {
     try {
+        // Using the  service to add a new airplane in the database 
+        // Created basic functions in the airplane service section to increase the reusablility  of code.
         const airplane = await AirplaneService.createAirplane({
             modelNumber:req.body.modelNumber,
             capacity:req.body.capacity,

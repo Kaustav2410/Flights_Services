@@ -2,6 +2,7 @@
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
+  // https://sequelize.org/api/v6/class/src/dialects/abstract/query-interface.js~queryinterface
   async up (queryInterface, Sequelize) {
       await queryInterface.addConstraint('Airports',{
         type: 'FOREIGN KEY',
@@ -12,7 +13,8 @@ module.exports = {
           field:'id'
         },
         onUpdate:'CASCADE',
-        onDELETE:'CASCADE'
+         // onDELETE:'CASCADE'
+         onDelete:'CASCADE'
       })
   },
 

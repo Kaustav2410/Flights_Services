@@ -17,15 +17,23 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
+  //Create an association that is either 1:m or n:m.
+  // Create a 1:m association between user and project
+  // User.hasMany(Project)
+  // Create a n:m association between user and project
+  // User.hasMany(Project)
+  // Project.hasMany(User)
       this.hasMany(models.Airport,{  
         foreignKey:'cityId'
       })
     }
   }
   City.init({
-    name: DataTypes.STRING,
-    allowNull: false,
+    name:{ 
+      type:DataTypes.STRING,
+    allowNull:false,
     unique:true,
+  }
   }, {
     sequelize,
     modelName: 'City',
