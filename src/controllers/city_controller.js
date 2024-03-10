@@ -22,6 +22,7 @@ async function  createCity (req, res) {
 
 async function  deleteCity (req, res) {
     try {
+        console.log(req.params.id);
         const city = await CityService.deleteCity(
             req.params.id
         )

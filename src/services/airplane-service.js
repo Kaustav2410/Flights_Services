@@ -50,7 +50,7 @@ async function destroyAirplane(id){
         if(err.statusCode == StatusCodes.NOT_FOUND){
             throw new AppError("The airplane you requested to delete is not found",StatusCodes.NOT_FOUND);  
         }
-        throw new AppError("Cannot fetch details of the specific airplane",StatusCodes.INTERNAL_SERVER_ERROR); 
+        throw new AppError("Cannot delete the specific airplane",StatusCodes.INTERNAL_SERVER_ERROR); 
     }
 }
 async function updateAirplane(data,id) {
@@ -59,7 +59,7 @@ async function updateAirplane(data,id) {
         return airplane;
     } catch (err) {
         if(err.statusCode == StatusCodes.NOT_FOUND){
-            throw new AppError("The airplane you requested to delete is not found",StatusCodes.NOT_FOUND);  
+            throw new AppError("The airplane you requested to update is not found",StatusCodes.NOT_FOUND);  
         }
             throw new AppError("Cannot fetch details of the specific airplane to update",StatusCodes.INTERNAL_SERVER_ERROR); 
         }   
