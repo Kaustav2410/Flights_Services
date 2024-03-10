@@ -15,15 +15,32 @@ module.exports = {
       },
       airplaneId: {
         type: Sequelize.INTEGER,
-        allowNull:false
+        allowNull:false,
+        // Dont have to explicitly mention it's a foreign key
+        // https://sequelize.org/api/v6/class/src/dialects/abstract/query-interface.js~queryinterface#instance-method-createTable
+        references:{
+          model: 'Airplanes',
+          key:'id'
+        },
+        onDelete:'CASCADE',
       },
       deparatureAirportId: {
-        type: Sequelize.INTEGER,
-        allowNull:false
+        type: Sequelize.STRING,
+        allowNull:false,
+        references:{
+          model: 'Airports',
+          key:'code'
+        },
+        onDelete:'CASCADE',
       },
       arrivalAirportId: {
-        type: Sequelize.INTEGER,
-        allowNull:false
+        type: Sequelize.STRING,
+        allowNull:false,
+        references:{
+          model: 'Airports',
+          key:'code'
+        },
+        onDelete:'CASCADE',
       },
       arrivalTime: {
         type: Sequelize.DATE,
